@@ -5,11 +5,11 @@ using UnityEngine;
 public class MovePlayer : MonoBehaviour
 {
     
-    public float horizontalSpeed = 3.0f;
+    public float horizontalSpeed = 2.0f;
     public float verticalSpeed = 0.6f;
-    public float horizontalLimit = 2.8f; 
+    public float horizontalLimit = 2.3f; 
 
-    public float bulletSpeed = 2;
+    public float bulletSpeed = 1.8f;
     public GameObject bulletPrefab;
     private bool bulletFired = false;
 

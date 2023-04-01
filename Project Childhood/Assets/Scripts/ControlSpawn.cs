@@ -30,6 +30,8 @@ public class ControlSpawn : MonoBehaviour
     void SpawnEnemy()
     {
         int random = Random.Range(0, positions.Length);
-        Instantiate(prefab, positions[random].position, Quaternion.Euler(0, 0, -90f));
+        
+        GameObject enemy = Instantiate(prefab, positions[random].position, Quaternion.Euler(0, 0, -90f));
+        Destroy(enemy, 8f);
     }
 }
