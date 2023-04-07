@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Camera : MonoBehaviour
+public class CameraScroll : MonoBehaviour
 {
     
     public GameObject target;
@@ -10,6 +10,6 @@ public class Camera : MonoBehaviour
 
     void FixedUpdate()
     {
-        transform.position = new Vector3(transform.position.x, verticalOffset + target.transform.position.y, transform.position.z);
+        transform.position = new Vector3(0, verticalOffset + target.transform.position.y, transform.position.z);
     }
 }

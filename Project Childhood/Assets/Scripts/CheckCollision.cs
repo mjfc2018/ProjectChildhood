@@ -4,13 +4,16 @@ using UnityEngine;
 
 public class CheckCollision : MonoBehaviour
 {
-    public GameObject panelGameOver;
+    
+    [SerializeField]
+    GameObject _panelGameOver;
+
     void OnTriggerEnter2D(Collider2D other)
     {
         if(other.transform.CompareTag("EnemyPlane"))
         {
             Time.timeScale = 0f;
-            panelGameOver.SetActive(true);
+            _panelGameOver.SetActive(true);
         }
     }
 }
