@@ -2,9 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
+    [SerializeField]
+    GameObject _panelGameOver;
+
     [SerializeField]
 	Camera _camera = null;
     
@@ -16,6 +21,14 @@ public class Player : MonoBehaviour
 
     [SerializeField]
     float _verticalSpeed = 0.01f;
+
+    [SerializeField]
+    Text fuelPanel;
+
+    [SerializeField]
+    float fuelDecreaseSpeed;
+
+    private float fuel = 100f;
 
     private float _verticalSpeedMax = 0.032f;
     private float _verticalSpeedMin = 0.003f;
@@ -106,10 +119,41 @@ public class Player : MonoBehaviour
             }
             
         }
+
+        // Fuel consuming and update
+        fuel -= Time.deltaTime * fuelDecreaseSpeed;
+        fuelPanel.text = "Fuel: " + (int)fuel;
+        if (fuel <= 0)
+        {
+            fuelPanel.text = "Fuel: 0";
+            DestroyPlayer();
+        }
     }
 
     void WaitTime()
     {
         bulletFired = false;
+    }
+
+    void OnTriggerEnter2D(Collider2D otherCollider)
+    {
+        if (otherCollider.tag == "EnemyBullet" || otherCollider.tag == "EnemyPlane")
+        {
+            Destroy(otherCollider.gameObject);
+            DestroyPlayer();
+        }
+        else if (otherCollider.tag == "Fuel")
+        {
+            Destroy(otherCollider.gameObject);
+            fuel = 100f;
+            fuelPanel.text = "Fuel : " + fuel;
+        }
+    }
+
+    void DestroyPlayer()
+    {
+        Destroy(gameObject);
+        Time.timeScale = 0f;
+        _panelGameOver.SetActive(true);
     }
 }
