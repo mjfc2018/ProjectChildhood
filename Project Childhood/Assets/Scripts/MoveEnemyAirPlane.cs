@@ -10,17 +10,27 @@ public class MoveEnemyAirPlane : MonoBehaviour
     public delegate void KillHandler();
     public event KillHandler OnKill;
 
-    //[SerializeField]
-    //Text scorePanel;
+    [SerializeField]
+    Text scorePanel;
 
-    //private int score;
+    private int score;
 
     public GameObject bulletPrefab;
     public float speed;
     public float bulletSpeed;
-    public float shootingInterval = 6f;
+    public float shootingInterval = 3f;
 
     private float shootingTimer;
+
+    [SerializeField]
+    AudioSource audioFX;
+
+    [SerializeField]
+    AudioClip shootAudioClip;
+
+    [SerializeField]
+    AudioClip fireHitClip;
+
 
     // Use this for initialization
     void OnEnable()
@@ -37,7 +47,7 @@ public class MoveEnemyAirPlane : MonoBehaviour
         if (shootingTimer <= 0f)
         {
             shootingTimer = shootingInterval;
-
+            audioFX.PlayOneShot(shootAudioClip);
             GameObject bulletInstance = Instantiate(bulletPrefab);
             bulletInstance.transform.SetParent(transform.parent);
             bulletInstance.transform.position = transform.position;
@@ -50,11 +60,9 @@ public class MoveEnemyAirPlane : MonoBehaviour
     {
         if (otherCollider.tag == "PlayerBullet")
         {
+            audioFX.PlayOneShot(fireHitClip);
             gameObject.SetActive(false);
             Destroy(otherCollider.gameObject);
-
-            //score += 25;
-            //scorePanel.text = "Score: " + score;
 
             if (OnKill != null)
             {

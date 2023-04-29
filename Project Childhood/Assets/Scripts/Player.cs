@@ -28,6 +28,18 @@ public class Player : MonoBehaviour
     [SerializeField]
     float fuelDecreaseSpeed;
 
+    [SerializeField]
+    AudioSource audioFX;
+
+    [SerializeField]
+    AudioClip shootAudioClip;
+
+    [SerializeField]
+    AudioClip refuelAudioClip;
+
+    [SerializeField]
+    AudioClip enemyFireHitClip;
+
     private float fuel = 100f;
 
     private float _verticalSpeedMax = 0.032f;
@@ -108,6 +120,7 @@ public class Player : MonoBehaviour
 
         if ( _shootInput.ReadValue<float>() == 1.0f ) {
             if(bulletFired == false) {
+                audioFX.PlayOneShot(shootAudioClip);
                 GameObject bullet = Instantiate(_bulletPrefab);
                 bullet.transform.SetParent(transform.parent);
                 bullet.transform.position  = transform.position;
@@ -139,11 +152,15 @@ public class Player : MonoBehaviour
     {
         if (otherCollider.tag == "EnemyBullet" || otherCollider.tag == "EnemyPlane")
         {
+
+            audioFX.PlayOneShot(enemyFireHitClip);
+            System.Threading.Thread.Sleep(1000);
             Destroy(otherCollider.gameObject);
             DestroyPlayer();
         }
         else if (otherCollider.tag == "Fuel")
         {
+            audioFX.PlayOneShot(refuelAudioClip);
             Destroy(otherCollider.gameObject);
             fuel = 100f;
             fuelPanel.text = "Fuel : " + fuel;
@@ -155,5 +172,6 @@ public class Player : MonoBehaviour
         Destroy(gameObject);
         Time.timeScale = 0f;
         _panelGameOver.SetActive(true);
+
     }
 }
